@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+
+	<title>EXAMPLE SLIDESHOW</title>
+	<meta name="description" content="EXAMPLE SLIDESHOW" />
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+
+	<style>
+		html, body {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			overflow: hidden;
+		}
+
+		#control-box {
+			position: relative;
+			margin: 50px;
+			width: 200px;
+			height: 100px;
+			border: 2px solid black;
+		}
+
+		#slideshow1 {
+			position: relative;
+			width: 400px;
+			height: 300px;
+			margin: 50px auto;
+			overflow: hidden;
+			-ms-touch-action: pan-y;
+			/*visibility: hidden;*/
+		}
+		.slideshow {
+			position: relative;
+			width: 100%;
+			height: 100%;
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+		}
+		.slide {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		#wrapper-slideshow2 {
+			position: relative;
+			width: 900px;
+			height: 300px;
+			margin: 0 auto;
+			overflow: hidden;
+		}
+		#slideshow2 {
+			position: absolute;
+			top: 0;
+			left: 50%;
+			overflow: visible;
+			width: 300px;
+			height: 100%;
+			margin-left: -150px;
+			-ms-touch-action: pan-y;
+		}
+
+		/* Flèche de control */
+		.bang-slideshow-arrow-horizontal-tol { /* tol = top or left */
+			position: absolute;
+			left: 0;
+			top: 0;
+			height: 100%;
+			width: 50%;
+			background: blue;
+		}
+		.bang-slideshow-arrow-horizontal-bor { /* bor = bottom or right */
+			position: absolute;
+			right: 0;
+			top: 0;
+			height: 100%;
+			width: 50%;
+			background: red;
+		}
+
+		/* Bullet nav */
+		.bang-slideshow-nav-horizontal {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 20px;
+			text-align: center;
+		}
+		.bang-slideshow-bullet {
+			display: inline-block;
+			*display: inline;
+			zoom: 1;
+			width: 10px;
+			height: 10px;
+			margin: 5px;
+			background: white;
+			border: 1px solid black;
+		}
+		.bang-slideshow-bullet.active {
+			background: black;
+		}
+
+		/* Preview Area */
+		.bang-slideshow-preview-horizontal-tol { /* tol = top or left */
+			position: absolute;
+			left: 0;
+			top: 0;
+			height: 100%;
+			width: 10%;
+			background: none;
+			border: 1px solid black;
+		}
+		.bang-slideshow-preview-horizontal-bor { /* bor = bottom or right */
+			position: absolute;
+			right: 0;
+			top: 0;
+			height: 100%;
+			width: 10%;
+			background: none;
+			border: 1px solid black;
+		}
+
+	</style>
+</head>
+<body>
+
+	<div id="control-box"></div>
+
+	<div id="slideshow1">
+		<ul class="slideshow">
+			<li class="slide" style="left: 0%;"><div style="height: 100%; background: blue;"></div></li>
+			<li class="slide" style="left: 100%;"><div style="height: 100%; background: yellow;"></div></li>
+			<li class="slide active" style="left: 200%;"><div style="height: 100%; background: red;"></div></li>
+			<li class="slide" style="left: 300%;"><div style="height: 100%; background: orange;"></div></li>
+			<li class="slide" style="left: 400%;"><div style="height: 100%; background: green;"></div></li>
+		</ul>
+	</div>
+
+	<div id="wrapper-slideshow2">
+		<div id="slideshow2">
+			<ul class="slideshow">
+				<li class="slide" style="left: 0%;"><div style="height: 100%; background: blue;"></div></li>
+				<li class="slide" style="left: 100%;"><div style="height: 100%; background: yellow;"></div></li>
+				<li class="slide active" style="left: 200%;"><div style="height: 100%; background: red;"></div></li>
+				<li class="slide" style="left: 300%;"><div style="height: 100%; background: orange;"></div></li>
+				<li class="slide" style="left: 400%;"><div style="height: 100%; background: green;"></div></li>
+			</ul>
+		</div>
+	</div>
+
+	<script src="jquery-2.0.0.min.js"></script>
+	<script src="jquery.slideshow.js"></script>
+	<script>
+		$(document).ready(function() {
+
+			$('#slideshow1 .slideshow').slideshow({
+				prefix     : "bang", // prefix CSS
+				speed 	   : 800,
+				method	   : 'animate', //method of animation (animate, transition, fx...)
+				easing 	   : 'swing',
+				autoslide  : true,
+				interval   : 4000,  // interval de l'autoslide
+				shownav	   : true, 	//show the bullet-navigation
+				navWrapper : null,  //selector || DOM element
+				preview    : true,
+				offset     : "10", //width of the preview
+				control    : true, //show right and left arrow controls
+				controlWrapper : $('#control-box'), //selector || DOM element
+				loop 	   : true,
+				nbClone    : 1,
+				direction  : 'ltr', //ltr || rtl || ttb || btt - (Left To Right, Right To left, Top to Bottom, Bottom To Top)
+				callsync: function($slides, oldIndex, newIndex) {
+					var $newSlide = $slides.eq(newIndex),
+						$oldSlide = $slides.eq(oldIndex);
+
+					// on peut donc récupérer des data placé sur les .slide pour changer un titre ou une légende par exemple
+				},
+				callback: function($slides, oldIndex, newIndex) {
+					var $newSlide = $slides.eq(newIndex),
+						$oldSlide = $slides.eq(oldIndex);
+
+					// on peut donc récupérer des data placé sur les .slide pour changer un titre ou une légende par exemple
+				}
+			}, function() { // Fonction de callback une fois le plugin appliqué
+				var $slideshow = this.$slideshow;
+
+				//$slideshow.css('visibility', "visible");
+
+				// Rajouter le swipe
+				$slideshow.on('touchstart.monprojet MSPointerDown.monprojet', function(event) {
+					//event.preventDefault();
+					var $this = $(this),
+						touch = (window.navigator.msPointerEnabled) ? event.originalEvent : event.originalEvent.touches[0] || event.originalEvent.changedTouches[0];
+
+					$this.data('x', touch.pageX);
+
+					var endSwipe = function(event) {
+						var touch = (window.navigator.msPointerEnabled) ? event.originalEvent : event.originalEvent.touches[0] || event.originalEvent.changedTouches[0],
+							deltaX = $this.data('x') - touch.pageX;
+
+						if (Math.abs(deltaX) > 100) {
+							if (deltaX > 0) {
+								$slideshow.data('slideshow').slideNext();
+							} else if (deltaX < 0) {
+								$slideshow.data('slideshow').slidePrev();
+							}
+						}
+
+						$(document).off('.monprojet', endSwipe);
+					}
+
+					$(document).on('touchend.monprojet MSPointerUp.monprojet', endSwipe);
+				});
+			});
+
+
+			$('#slideshow2 .slideshow').slideshow({
+				autoslide  : false,
+				interval   : 4000,  // interval de l'autoslide
+				shownav	   : true, 	//show the bullet-navigation
+				navWrapper : null,  //selector || DOM element
+				preview    : false,
+				control    : false, //show right and left arrow controls
+				loop 	   : false,
+				nbClone    : 2,
+				limit: [1,1]
+			});
+
+		});
+	</script>
+</body>
+</html>
